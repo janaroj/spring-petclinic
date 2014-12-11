@@ -10,7 +10,8 @@
 ## Running petclinic locally
 ```
 	git clone https://github.com/janaroj/spring-petclinic.git
-	mvn tomcat7:run
+	mvn exec:exec (starts the database)
+	mvn tomcat7:run (starts the application)
 ```
 
 You can then access petclinic here: http://localhost:9966/petclinic/
