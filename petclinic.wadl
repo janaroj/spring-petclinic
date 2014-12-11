@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns="http://wadl.dev.java.net/2009/02">
+
+    <resources base="http://localhost:9966/petclinic">
+    
+        <resource path="owners">
+            <resource path="get">
+                <method name="GET" id="GetOwnerQuery">
+                    <request>
+                        <param name="id" required="true" style="query"/>
+                    </request>
+                </method>
+                
+                 <resource path="{id}">
+                    <param required="true" style="template" name="id"/>
+                    <method name="GET" id="GetOwnerTemplate"/>
+                </resource>
+            </resource>
+        </resource>
+        
+        <resource path="vets">
+            <resource path="get">
+                <method name="GET" id="GetVetQuery">
+                    <request>
+                        <param name="id" required="true" style="query"/>
+                    </request>
+                </method>
+                
+                <resource path="{id}">
+                    <param required="true" style="template" name="id"/>
+                <method name="GET" id="GetVetTemplate"/>
+                </resource>
+            </resource>
+        </resource>
+        
+        <resource path="pets">
+            <resource path="get">
+                <method name="GET" id="GetPetQuery">
+                    <request>
+                        <param name="id" required="true" style="query"/>
+                    </request>
+                </method>
+                
+                <resource path="{id}">
+                    <param required="true" style="template" name="id"/>
+                <method name="GET" id="GetPetTemplate"/>
+                </resource>
+            </resource>
+        </resource>
+        
+        <resource path="visits">
+            <resource path="get">
+                <method name="GET" id="GetVisitQuery">
+                    <request>
+                        <param name="id" required="true" style="query"/>
+                    </request>
+                </method>
+                
+                <resource path="{id}">
+                    <param required="true" style="template" name="id"/>
+                <method name="GET" id="GetVisitTemplate"/>
+                </resource>
+            </resource>
+        </resource>
+        
+    </resources>
+    
+</application>

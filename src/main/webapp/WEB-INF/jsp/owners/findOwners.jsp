@@ -7,7 +7,7 @@
 
 <html lang="en">
 
-<jsp:include page="../fragments/staticFiles.jsp"/>
+<jsp:include page="../fragments/headTag.jsp"/>
 
 <body>
 <div class="container">

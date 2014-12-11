@@ -1,7 +1,7 @@
 # Spring PetClinic Sample Application
 
 ## What does it look like?
--spring-petclinic has been deployed here on cloudfoundry: http://demo-spring-petclinic.cfapps.io/
+-spring-petclinic has been deployed here on cloudfoundry: http://gopetclinic.cfapps.io/
 
 
 ## Understanding the Spring Petclinic application with a few diagrams
@@ -87,7 +87,6 @@ File -> Import -> Maven -> Existing Maven project
       <a href="/src/main/webapp/WEB-INF/jsp/owners/ownersList.jsp">ownersList.jsp</a> 
       <a href="/src/main/webapp/WEB-INF/jsp/vets/vetList.jsp">vetList.jsp</a> 
       <a href="/src/main/webapp/WEB-INF/web.xml">web.xml</a> 
-      <a href="/src/main/resources/dandelion/datatables/datatables.properties">datatables.properties</a> 
    </td>
   </tr>
   <tr>

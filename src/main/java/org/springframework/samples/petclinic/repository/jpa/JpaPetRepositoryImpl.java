@@ -18,8 +18,11 @@ package org.springframework.samples.petclinic.repository.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
+import org.springframework.samples.petclinic.exception.ResourceNotFoundException;
 import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.repository.PetRepository;
@@ -27,7 +30,7 @@ import org.springframework.stereotype.Repository;
 
 /**
  * JPA implementation of the {@link PetRepository} interface.
- *
+ * 
  * @author Mike Keith
  * @author Rod Johnson
  * @author Sam Brannen
@@ -37,28 +40,39 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JpaPetRepositoryImpl implements PetRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+   @PersistenceContext
+   private EntityManager em;
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<PetType> findPetTypes() {
-        return this.em.createQuery("SELECT ptype FROM PetType ptype ORDER BY ptype.name").getResultList();
-    }
+   @Override
+   @SuppressWarnings("unchecked")
+   public List<PetType> findPetTypes() {
+      return this.em.createQuery("SELECT ptype FROM PetType ptype ORDER BY ptype.name").getResultList();
+   }
 
-    @Override
-    public Pet findById(int id) {
-        return this.em.find(Pet.class, id);
-    }
+   @Override
+   public Pet findById(int id) {
+      Query query = this.em.createQuery("SELECT pet FROM Pet pet WHERE pet.id =:id");
+      query.setParameter("id", id);
+      try {
+         return (Pet) query.getSingleResult();
+      } catch (NoResultException ex) {
+         throw new ResourceNotFoundException();
+      }
+   }
 
-    @Override
-    public void save(Pet pet) {
-    	if (pet.getId() == null) {
-    		this.em.persist(pet);     		
-    	}
-    	else {
-    		this.em.merge(pet);    
-    	}
-    }
+   @Override
+   public void save(Pet pet) {
+      if (pet.getId() == null) {
+         this.em.persist(pet);
+      } else {
+         this.em.merge(pet);
+      }
+   }
+
+   @Override
+   public int delete(Pet pet) {
+      this.em.remove(pet);
+      return pet.getId();
+   }
 
 }

@@ -60,13 +60,11 @@ public class VisitsViewTests {
     
     @Test
     public void getVisitsXml() throws Exception {
-        ResultActions actions = this.mockMvc.perform(get("/vets.xml").accept(MediaType.TEXT_XML));
+        ResultActions actions = this.mockMvc.perform(get("/vets.xml").accept(MediaType.APPLICATION_XML));
         actions.andDo(print()); // action is logged into the console
-        
-        // TODO: there seems to be a conflict between this code and the new namespace <mvc:content-negotiation />
-        // actions.andExpect(status().isOk());
-        //actions.andExpect(content().contentType("application/xml"));
-        // actions.andExpect(xpath("/vets/vetList[id=1]/firstName").string(containsString("James")));
+        actions.andExpect(status().isOk());
+        actions.andExpect(content().contentType("application/xml"));
+        actions.andExpect(xpath("/vets/vetList[id=1]/firstName").string(containsString("James")));
 
     }
 }

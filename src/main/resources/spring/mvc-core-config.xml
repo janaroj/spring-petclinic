@@ -33,9 +33,8 @@
 
     <mvc:view-controller path="/" view-name="welcome" />
 
-    <!-- serve static resources (*.html, ...) from src/main/webapp/ 
-    Required when both servlet-mapping is '/' and static resources need to be served -->
-    <mvc:default-servlet-handler />
+    <!-- serve static resources (*.html, ...) from src/main/webapp/ -->
+    <mvc:default-servlet-handler/>
 
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="formatters">
@@ -63,5 +62,33 @@
         <property name="warnLogCategory" value="warn"/>
         <!-- needed otherwise exceptions won't be logged anywhere -->
     </bean>
+
+     <bean id="ClinicServiceOperations"  
+  class="org.springframework.ws.wsdl.wsdl11.DefaultWsdl11Definition"  
+  lazy-init="true">  
+  <property name="schema">
+  <bean class="org.springframework.xml.xsd.SimpleXsdSchema">
+  <property name="xsd" value="classpath:Schemas/ClinicServiceOperations.xsd"/>  
+   </bean>
+   </property>
+  <property name="portTypeName" value="ClinicServiceOperations" />  
+  <property name="serviceName" value="ClinicServiceOperations" />  
+  <property name="locationUri" value="/endpoints" />  
+ </bean>  
+
+
+<bean id="ClinicServiceEndpoints" class="org.springframework.samples.petclinic.endpoints.ClinicServiceEndpoints" autowire="byName"/>
+
+
+<!-- <bean id="loggingInterceptor"
+class="org.springframework.ws.server.endpoint.interceptor.PayloadLoggingInterceptor"/>
+<bean
+class="org.springframework.ws.server.endpoint.mapping.PayloadRootAnnotationMethodEndpointMapping">
+<property name="interceptors">
+<list>
+<ref local="loggingInterceptor"/>
+</list>
+</property>
+</bean> -->
 
 </beans>

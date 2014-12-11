@@ -18,16 +18,19 @@ package org.springframework.samples.petclinic.repository.jpa;
 import java.util.Collection;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataAccessException;
+import org.springframework.samples.petclinic.exception.ResourceNotFoundException;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.repository.VetRepository;
 import org.springframework.stereotype.Repository;
 
 /**
  * JPA implementation of the {@link VetRepository} interface.
- *
+ * 
  * @author Mike Keith
  * @author Rod Johnson
  * @author Sam Brannen
@@ -37,15 +40,40 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JpaVetRepositoryImpl implements VetRepository {
 
-    @PersistenceContext
-    private EntityManager em;
+   @PersistenceContext
+   private EntityManager em;
 
+   @Override
+   @SuppressWarnings("unchecked")
+   public Collection<Vet> findAll() {
+      return this.em.createQuery("SELECT distinct vet FROM Vet vet left join fetch vet.specialties ORDER BY vet.lastName, vet.firstName").getResultList();
+   }
 
-    @Override
-    @Cacheable(value = "vets")
-    @SuppressWarnings("unchecked")
-    public Collection<Vet> findAll() {
-        return this.em.createQuery("SELECT distinct vet FROM Vet vet left join fetch vet.specialties ORDER BY vet.lastName, vet.firstName").getResultList();
-    }
+   @Override
+   public Vet findById(int id) throws DataAccessException {
+      Query query = this.em.createQuery("SELECT vet FROM Vet vet left join fetch vet.specialties WHERE vet.id =:id");
+      query.setParameter("id", id);
+      try {
+         return (Vet) query.getSingleResult();
+      } catch (NoResultException ex) {
+         throw new ResourceNotFoundException();
+      }
+   }
+
+   @Override
+   public void save(Vet vet) {
+      if (vet.getId() == null) {
+         this.em.persist(vet);
+      } else {
+         this.em.merge(vet);
+      }
+
+   }
+
+   @Override
+   public int delete(Vet vet) {
+      this.em.remove(vet);
+      return vet.getId();
+   }
 
 }

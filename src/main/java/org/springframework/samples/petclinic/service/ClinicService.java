@@ -24,28 +24,42 @@ import org.springframework.samples.petclinic.model.PetType;
 import org.springframework.samples.petclinic.model.Vet;
 import org.springframework.samples.petclinic.model.Visit;
 
-
 /**
  * Mostly used as a facade for all Petclinic controllers
- *
+ * 
  * @author Michael Isvy
  */
+
 public interface ClinicService {
 
-    Collection<PetType> findPetTypes() throws DataAccessException;
+   public Collection<PetType> findPetTypes() throws DataAccessException;
 
-    Owner findOwnerById(int id) throws DataAccessException;
+   public Owner findOwnerById(int id) throws DataAccessException;
 
-    Pet findPetById(int id) throws DataAccessException;
+   public Vet findVetById(int id) throws DataAccessException;
 
-    void savePet(Pet pet) throws DataAccessException;
+   public Pet findPetById(int id) throws DataAccessException;
 
-    void saveVisit(Visit visit) throws DataAccessException;
+   public Visit findVisitById(int id) throws DataAccessException;
 
-    Collection<Vet> findVets() throws DataAccessException;
+   public Collection<Vet> findVets() throws DataAccessException;
 
-    void saveOwner(Owner owner) throws DataAccessException;
+   Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
-    Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
+   public int savePet(Pet pet) throws DataAccessException;
+
+   public int saveVisit(Visit visit) throws DataAccessException;
+
+   public int saveOwner(Owner owner) throws DataAccessException;
+
+   public int saveVet(Vet vet) throws DataAccessException;
+
+   public int deleteVet(int id) throws DataAccessException;
+
+   public int deleteOwner(int id) throws DataAccessException;
+
+   public int deleteVisit(int id) throws DataAccessException;
+
+   public int deletePet(int id) throws DataAccessException;
 
 }

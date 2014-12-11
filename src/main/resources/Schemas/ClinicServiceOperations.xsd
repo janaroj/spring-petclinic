@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"  targetNamespace="http://org.spring.framework.petclinic" xmlns="http://org.spring.framework.petclinic" elementFormDefault="qualified">
+ 
+  <!--  <xsd:element name="owner" type="owner"/>-->
+  
+  
+    <xsd:complexType name="generatedNamedEntity">
+                    <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string" />
+                    </xsd:sequence>
+    </xsd:complexType>
+  
+ <xsd:complexType name="generatedPerson">
+            <xsd:sequence>
+                <xsd:element name="firstName" type="xsd:string" />
+                <xsd:element name="lastName" type="xsd:string" />
+            </xsd:sequence>
+ </xsd:complexType>
+  
+   <xsd:complexType name="generatedOwner">
+    <xsd:complexContent>
+        <xsd:extension base="generatedPerson">
+            <xsd:sequence>
+                <xsd:element name="address" type="xsd:string"/>
+                <xsd:element name="city" type="xsd:string"/>
+                <xsd:element name="telephone" type="xsd:string"/>
+            </xsd:sequence> 
+        </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="generatedPet">
+    <xsd:complexContent>
+      <xsd:extension base="generatedNamedEntity">
+        <xsd:sequence>
+        <xsd:element name="birthDate" type="xsd:dateTime" />
+        <xsd:element name="type" type="generatedPetType"/>
+        <xsd:element name="ownerId" type="xsd:int"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="generatedPetType">
+       <xsd:sequence>
+        <xsd:element name="typeId" type = "xsd:int"/>
+       </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:complexType name="generatedVet">
+    <xsd:complexContent>
+        <xsd:extension base="generatedPerson">
+            <xsd:sequence>
+                <xsd:element name="specialties" minOccurs="0" maxOccurs="unbounded" type="generatedSpecialty"/>
+            </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="generatedSpecialty">
+    <xsd:complexContent>
+        <xsd:extension base="generatedNamedEntity"/>
+    </xsd:complexContent>
+  </xsd:complexType>
+  
+  <xsd:complexType name="generatedVisit">
+            <xsd:sequence>
+                <xsd:element name="date" type="xsd:dateTime" />
+                <xsd:element name="description" type="xsd:string" />
+                <xsd:element name="petId" type="xsd:int" />
+            </xsd:sequence>
+  </xsd:complexType>
+  
+  <xsd:element name="AddOwnerRequest">  
+  <xsd:complexType>  
+   <xsd:sequence>  
+    <xsd:element name="ownerDetails" type="generatedOwner" />  
+   </xsd:sequence>  
+  </xsd:complexType>  
+ </xsd:element>  
+ 
+ <xsd:element name="AddOwnerResponse">  
+  <xsd:complexType>  
+   <xsd:sequence>  
+    <xsd:element name="id" type="xsd:int" />  
+   </xsd:sequence>  
+  </xsd:complexType>  
+ </xsd:element>
+  
+ <xsd:element name="AddPetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="pet" type="generatedPet"/>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="AddPetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="AddVisitRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="visit" type="generatedVisit"/>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="AddVisitResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+   <xsd:element name="AddVetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="vet" type="generatedVet"/>
+        </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   
+   <xsd:element name="AddVetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+   </xsd:element>
+   
+  <xsd:element name="GetPetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="GetPetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="pet" type="generatedPet" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="GetOwnerRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="GetOwnerResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="owner" type="generatedOwner" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="GetVetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="GetVetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="vet" type="generatedVet"/>
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name ="GetVisitRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name ="GetVisitResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="visit" type="generatedVisit" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="DeleteVetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="DeleteVetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="DeletePetRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="DeletePetResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="DeleteVisitRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="DeleteVisitResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+   <xsd:element name="DeleteOwnerRequest">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+  <xsd:element name="DeleteOwnerResponse">
+    <xsd:complexType>
+        <xsd:sequence>
+            <xsd:element name="id" type="xsd:int" />
+        </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+  
+</xsd:schema>
+
+

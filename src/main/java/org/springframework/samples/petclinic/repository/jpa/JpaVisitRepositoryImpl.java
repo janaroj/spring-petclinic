@@ -18,9 +18,14 @@ package org.springframework.samples.petclinic.repository.jpa;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.samples.petclinic.exception.ResourceNotFoundException;
+import org.springframework.samples.petclinic.model.Pet;
 import org.springframework.samples.petclinic.model.Visit;
 import org.springframework.samples.petclinic.repository.VisitRepository;
 import org.springframework.stereotype.Repository;
@@ -28,8 +33,9 @@ import org.springframework.stereotype.Repository;
 /**
  * JPA implementation of the ClinicService interface using EntityManager.
  * <p/>
- * <p>The mappings are defined in "orm.xml" located in the META-INF directory.
- *
+ * <p>
+ * The mappings are defined in "orm.xml" located in the META-INF directory.
+ * 
  * @author Mike Keith
  * @author Rod Johnson
  * @author Sam Brannen
@@ -38,28 +44,48 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class JpaVisitRepositoryImpl implements VisitRepository {
+   Logger logger = LoggerFactory.getLogger(JpaVisitRepositoryImpl.class);
+   @PersistenceContext
+   private EntityManager em;
 
-    @PersistenceContext
-    private EntityManager em;
+   @Override
+   public void save(Visit visit) {
+      if (visit.getId() == null) {
+         this.em.persist(visit);
+      } else {
+         this.em.merge(visit);
+      }
+   }
 
+   @Override
+   @SuppressWarnings("unchecked")
+   public List<Visit> findByPetId(Integer petId) {
+      Query query = this.em.createQuery("SELECT visit FROM Visit v where v.pets.id= :id");
+      query.setParameter("id", petId);
+      return query.getResultList();
+   }
 
-    @Override
-    public void save(Visit visit) {
-    	if (visit.getId() == null) {
-    		this.em.persist(visit);     		
-    	}
-    	else {
-    		this.em.merge(visit);    
-    	}
-    }
+   @Override
+   public Visit findById(int id) {
+      Query query = this.em.createQuery("SELECT visit FROM Visit visit where visit.id=:id");
+      query.setParameter("id", id);
+      try {
+         return (Visit) query.getSingleResult();
+      } catch (NoResultException ex) {
+         throw new ResourceNotFoundException();
+      }
+   }
 
+   @Override
+   public int delete(Visit visit) {
+      removeVisitFromPet(visit);
+      this.em.remove(visit);
+      return visit.getId();
+   }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Visit> findByPetId(Integer petId) {
-        Query query = this.em.createQuery("SELECT visit FROM Visit v where v.pets.id= :id");
-        query.setParameter("id", petId);
-        return query.getResultList();
-    }
+   private void removeVisitFromPet(Visit visit) {
+      Pet pet = visit.getPet();
+      pet.removeVisit(visit);
+   }
 
 }
