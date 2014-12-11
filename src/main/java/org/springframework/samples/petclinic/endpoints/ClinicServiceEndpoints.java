@@ -58,8 +58,7 @@ public class ClinicServiceEndpoints {
    private static final String TARGET_NAMESPACE = "http://org.spring.framework.petclinic";
 
    @PayloadRoot(localPart = "GetOwnerRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   GetOwnerResponse getOwnerDetails(@RequestPayload GetOwnerRequest request) {
+   public @ResponsePayload GetOwnerResponse getOwnerDetails(@RequestPayload GetOwnerRequest request) {
       Owner owner = clinicService.findOwnerById(request.getId());
       GetOwnerResponse response = new GetOwnerResponse();
       response.setOwner(convertOwner(owner));
@@ -67,32 +66,28 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "GetPetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   GetPetResponse getPetDetails(@RequestPayload GetPetRequest request) throws DatatypeConfigurationException {
+   public @ResponsePayload GetPetResponse getPetDetails(@RequestPayload GetPetRequest request) throws DatatypeConfigurationException {
       GetPetResponse response = new GetPetResponse();
       response.setPet(convertPet(clinicService.findPetById(request.getId())));
       return response;
    }
 
    @PayloadRoot(localPart = "GetVetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   GetVetResponse getVetDetails(@RequestPayload GetVetRequest request) {
+   public @ResponsePayload GetVetResponse getVetDetails(@RequestPayload GetVetRequest request) {
       GetVetResponse response = new GetVetResponse();
       response.setVet(convertVet(clinicService.findVetById(request.getId())));
       return response;
    }
 
    @PayloadRoot(localPart = "GetVisitRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   GetVisitResponse getVisitDetails(@RequestPayload GetVisitRequest request) throws DatatypeConfigurationException {
+   public @ResponsePayload GetVisitResponse getVisitDetails(@RequestPayload GetVisitRequest request) throws DatatypeConfigurationException {
       GetVisitResponse response = new GetVisitResponse();
       response.setVisit(convertVisit(clinicService.findVisitById(request.getId())));
       return response;
    }
 
    @PayloadRoot(localPart = "AddOwnerRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   AddOwnerResponse addOwner(@RequestPayload AddOwnerRequest request) {
+   public @ResponsePayload AddOwnerResponse addOwner(@RequestPayload AddOwnerRequest request) {
       int id = clinicService.saveOwner(convertOwner(request.getOwnerDetails()));
       AddOwnerResponse response = new AddOwnerResponse();
       response.setId(id);
@@ -100,8 +95,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "AddPetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   AddPetResponse addPet(@RequestPayload AddPetRequest request) {
+   public @ResponsePayload AddPetResponse addPet(@RequestPayload AddPetRequest request) {
       int id = clinicService.savePet(convertPet(request.getPet()));
       AddPetResponse response = new AddPetResponse();
       response.setId(id);
@@ -109,8 +103,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "AddVisitRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   AddVisitResponse addVisit(@RequestPayload AddVisitRequest request) {
+   public @ResponsePayload AddVisitResponse addVisit(@RequestPayload AddVisitRequest request) {
       int id = clinicService.saveVisit(convertVisit(request.getVisit()));
       AddVisitResponse response = new AddVisitResponse();
       response.setId(id);
@@ -118,8 +111,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "AddVetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   AddVetResponse addVet(@RequestPayload AddVetRequest request) {
+   public @ResponsePayload AddVetResponse addVet(@RequestPayload AddVetRequest request) {
       int id = clinicService.saveVet(convertVet(request.getVet()));
       AddVetResponse response = new AddVetResponse();
       response.setId(id);
@@ -127,8 +119,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "DeleteVetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   DeleteVetResponse deleteVet(@RequestPayload DeleteVetRequest request) {
+   public @ResponsePayload DeleteVetResponse deleteVet(@RequestPayload DeleteVetRequest request) {
       DeleteVetResponse response = new DeleteVetResponse();
       int id = clinicService.deleteVet(request.getId());
       response.setId(id);
@@ -136,8 +127,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "DeleteOwnerRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   DeleteOwnerResponse deleteOwner(@RequestPayload DeleteOwnerRequest request) {
+   public @ResponsePayload DeleteOwnerResponse deleteOwner(@RequestPayload DeleteOwnerRequest request) {
       DeleteOwnerResponse response = new DeleteOwnerResponse();
       int id = clinicService.deleteOwner(request.getId());
       response.setId(id);
@@ -145,8 +135,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "DeleteVisitRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   DeleteVisitResponse deleteVisit(@RequestPayload DeleteVisitRequest request) {
+   public @ResponsePayload DeleteVisitResponse deleteVisit(@RequestPayload DeleteVisitRequest request) {
       DeleteVisitResponse response = new DeleteVisitResponse();
       int id = clinicService.deleteVisit(request.getId());
       response.setId(id);
@@ -154,8 +143,7 @@ public class ClinicServiceEndpoints {
    }
 
    @PayloadRoot(localPart = "DeletePetRequest", namespace = TARGET_NAMESPACE)
-   public @ResponsePayload
-   DeletePetResponse deletePet(@RequestPayload DeletePetRequest request) {
+   public @ResponsePayload DeletePetResponse deletePet(@RequestPayload DeletePetRequest request) {
       DeletePetResponse response = new DeletePetResponse();
       int id = clinicService.deletePet(request.getId());
       response.setId(id);

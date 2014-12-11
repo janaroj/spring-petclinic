@@ -1,12 +1,9 @@
 /*
  * Copyright 2002-2013 the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,58 +33,56 @@ import org.springframework.util.StopWatch;
 @Aspect
 public class CallMonitoringAspect {
 
-    private boolean enabled = true;
+   private boolean enabled = true;
 
-    private int callCount = 0;
+   private int callCount = 0;
 
-    private long accumulatedCallTime = 0;
+   private long accumulatedCallTime = 0;
 
+   @ManagedAttribute
+   public void setEnabled(boolean enabled) {
+      this.enabled = enabled;
+   }
 
-    @ManagedAttribute
-    public void setEnabled(boolean enabled) {
-    	this.enabled = enabled;
-    }
+   @ManagedAttribute
+   public boolean isEnabled() {
+      return enabled;
+   }
 
-    @ManagedAttribute
-    public boolean isEnabled() {
-        return enabled;
-    }
+   @ManagedOperation
+   public void reset() {
+      this.callCount = 0;
+      this.accumulatedCallTime = 0;
+   }
 
-    @ManagedOperation
-    public void reset() {
-        this.callCount = 0;
-        this.accumulatedCallTime = 0;
-    }
+   @ManagedAttribute
+   public int getCallCount() {
+      return callCount;
+   }
 
-    @ManagedAttribute
-    public int getCallCount() {
-        return callCount;
-    }
+   @ManagedAttribute
+   public long getCallTime() {
+      return (this.callCount > 0 ? this.accumulatedCallTime / this.callCount : 0);
+   }
 
-    @ManagedAttribute
-    public long getCallTime() {
-        return (this.callCount > 0 ? this.accumulatedCallTime / this.callCount : 0);
-    }
+   @Around("within(@org.springframework.stereotype.Repository *)")
+   public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
+      if (this.enabled) {
+         StopWatch sw = new StopWatch(joinPoint.toShortString());
 
-
-    @Around("within(@org.springframework.stereotype.Repository *)")
-    public Object invoke(ProceedingJoinPoint joinPoint) throws Throwable {
-        if (this.enabled) {
-            StopWatch sw = new StopWatch(joinPoint.toShortString());
-
-            sw.start("invoke");
-            try {
-                return joinPoint.proceed();
-            } finally {
-                sw.stop();
-                synchronized (this) {
-                    this.callCount++;
-                    this.accumulatedCallTime += sw.getTotalTimeMillis();
-                }
-            }
-        } else {
+         sw.start("invoke");
+         try {
             return joinPoint.proceed();
-        }
-    }
+         } finally {
+            sw.stop();
+            synchronized (this) {
+               this.callCount++;
+               this.accumulatedCallTime += sw.getTotalTimeMillis();
+            }
+         }
+      } else {
+         return joinPoint.proceed();
+      }
+   }
 
 }

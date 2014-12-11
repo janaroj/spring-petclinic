@@ -1,12 +1,9 @@
 /*
  * Copyright 2002-2013 the original author or authors.
- *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
+ * http://www.apache.org/licenses/LICENSE-2.0
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +11,6 @@
  * limitations under the License.
  */
 package org.springframework.samples.petclinic.web;
-
 
 import java.text.ParseException;
 import java.util.Collection;
@@ -39,28 +35,27 @@ import org.springframework.samples.petclinic.service.ClinicService;
  */
 public class PetTypeFormatter implements Formatter<PetType> {
 
-    private final ClinicService clinicService;
+   private final ClinicService clinicService;
 
+   @Autowired
+   public PetTypeFormatter(ClinicService clinicService) {
+      this.clinicService = clinicService;
+   }
 
-    @Autowired
-    public PetTypeFormatter(ClinicService clinicService) {
-        this.clinicService = clinicService;
-    }
+   @Override
+   public String print(PetType petType, Locale locale) {
+      return petType.getName();
+   }
 
-    @Override
-    public String print(PetType petType, Locale locale) {
-        return petType.getName();
-    }
-
-    @Override
-    public PetType parse(String text, Locale locale) throws ParseException {
-        Collection<PetType> findPetTypes = this.clinicService.findPetTypes();
-        for (PetType type : findPetTypes) {
-            if (type.getName().equals(text)) {
-                return type;
-            }
-        }
-        throw new ParseException("type not found: " + text, 0);
-    }
+   @Override
+   public PetType parse(String text, Locale locale) throws ParseException {
+      Collection<PetType> findPetTypes = this.clinicService.findPetTypes();
+      for (PetType type : findPetTypes) {
+         if (type.getName().equals(text)) {
+            return type;
+         }
+      }
+      throw new ParseException("type not found: " + text, 0);
+   }
 
 }
