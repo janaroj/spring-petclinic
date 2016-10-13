@@ -417,8 +417,8 @@
 				<configuration>
 					<executable>java</executable>
 					<mainClass>org.hsqldb.Server</mainClass>
-					<workingDirectory>${project.basedir}\src\main\resources\spring</workingDirectory>
-					<commandlineArgs>-cp ${user.home}\.m2\repository\org\hsqldb\hsqldb\2.3.1\hsqldb-2.3.1.jar org.hsqldb.Server --database.0 file:petclinic</commandlineArgs>
+					<workingDirectory>${project.basedir}/src/main/resources/spring</workingDirectory>
+					<commandlineArgs>-cp ${user.home}/.m2/repository/org/hsqldb/hsqldb/2.3.1/hsqldb-2.3.1.jar org.hsqldb.Server --database.0 file:petclinic</commandlineArgs>
 				</configuration>
 			</plugin>
 
